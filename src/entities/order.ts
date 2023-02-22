@@ -12,7 +12,9 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   price: number;
 
   @OneToMany(() => OrderItem, (orderItem) => orderItem.order)

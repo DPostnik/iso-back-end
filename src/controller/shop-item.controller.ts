@@ -6,26 +6,29 @@ import {
   Post,
   Response,
 } from '@decorators/express';
-import { AppDataSource } from 'db';
 import { ShopItem } from 'entities';
-import { ShopItemDto } from 'entities/dto';
+import { ShopItemService } from 'service';
+import { Injectable } from '@decorators/di';
 
+@Injectable()
 @Controller('/shop-item')
 export class ShopItemController {
+  constructor(private shopItemService: ShopItemService) {}
   @Get('/')
-  async getCategories(@Response() res: any) {
-    return await AppDataSource.getRepository(ShopItem).findAndCount();
+  async getShopItems(@Response() res: any) {
+    return await this.shopItemService.findAll();
   }
 
   @Get('/:id')
-  async getCategory(@Response() res: any, @Params('id') id: string) {
-    return await AppDataSource.getRepository(ShopItem).findOne({
-      where: { id: +id },
-    });
+  async getShopItem(@Response() res: any, @Params('id') id: string) {
+    return await this.shopItemService.findById(+id);
   }
 
   @Post('/')
-  async createCategory(@Response() res: any, @Body() shopItem: ShopItemDto) {
-    return await AppDataSource.getRepository(ShopItem).save(shopItem);
+  async createShopItem(
+    @Response() res: any,
+    @Body() shopItem: Partial<ShopItem>,
+  ) {
+    return await this.shopItemService.create(shopItem);
   }
 }

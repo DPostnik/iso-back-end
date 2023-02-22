@@ -5,6 +5,14 @@ export class Image {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   url: string;
+
+  @Column({
+    default: 1,
+  })
+  position: number;
 }
+

@@ -7,8 +7,8 @@ import {
   Body,
 } from '@decorators/express';
 import { CategoryService } from 'service';
-import { CategoryDto } from 'entities/dto';
 import { Injectable } from '@decorators/di';
+import { Category } from 'entities';
 
 @Injectable()
 @Controller('/category')
@@ -26,7 +26,10 @@ export class CategoryController {
   }
 
   @Post('/')
-  async createCategory(@Response() res: any, @Body() category: CategoryDto) {
+  async createCategory(
+    @Response() res: any,
+    @Body() category: Partial<Category>,
+  ) {
     return await this.categoryService.create(category);
   }
 }

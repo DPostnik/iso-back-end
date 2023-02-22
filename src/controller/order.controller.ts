@@ -6,26 +6,27 @@ import {
   Post,
   Response,
 } from '@decorators/express';
-import { AppDataSource } from 'db';
 import { Order } from 'entities';
-import { OrderDto } from 'entities/dto';
+import { Injectable } from '@decorators/di';
+import { OrderService } from 'service';
 
+@Injectable()
 @Controller('/order')
 export class OrderController {
+  constructor(private orderService: OrderService) {}
+
   @Get('/')
-  async getCategories(@Response() res: any) {
-    return await AppDataSource.getRepository(Order).findAndCount();
+  async getOrders(@Response() res: any) {
+    return await this.orderService.findAll();
   }
 
   @Get('/:id')
-  async getCategory(@Response() res: any, @Params('id') id: string) {
-    return await AppDataSource.getRepository(Order).findOne({
-      where: { id: +id },
-    });
+  async getOrder(@Response() res: any, @Params('id') id: string) {
+    return await this.orderService.findById(+id);
   }
 
   @Post('/')
-  async createCategory(@Response() res: any, @Body() category: OrderDto) {
-    return await AppDataSource.getRepository(Order).save(category);
+  async createOrder(@Response() res: any, @Body() order: Partial<Order>) {
+    return await this.orderService.create(order);
   }
 }

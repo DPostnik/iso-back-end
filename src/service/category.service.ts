@@ -1,7 +1,6 @@
 import { AppDataSource } from 'db';
 import { Category } from 'entities';
 import { Injectable } from '@decorators/di';
-import { CategoryDto } from 'entities/dto';
 
 @Injectable()
 export class CategoryService {
@@ -14,7 +13,7 @@ export class CategoryService {
     return await AppDataSource.getRepository(Category).findAndCount();
   }
 
-  async create(category: CategoryDto) {
+  async create(category: Partial<Category>) {
     return await AppDataSource.getRepository(Category).save(category);
   }
 }

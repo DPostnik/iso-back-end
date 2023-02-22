@@ -12,7 +12,10 @@ export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+    unique: true,
+  })
   title: string;
 
   @ManyToMany(() => ShopItem)

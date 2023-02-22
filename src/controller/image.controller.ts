@@ -6,26 +6,26 @@ import {
   Post,
   Response,
 } from '@decorators/express';
-import { AppDataSource } from 'db';
 import { Image } from 'entities';
-import { ImageDto } from 'entities/dto';
+import { ImageService } from 'service';
+import { Injectable } from '@decorators/di';
 
+@Injectable()
 @Controller('/image')
 export class ImageController {
+  constructor(private imageService: ImageService) {}
   @Get('/')
-  async getCategories(@Response() res: any) {
-    return await AppDataSource.getRepository(Image).findAndCount();
+  async getImages(@Response() res: any) {
+    return await this.imageService.findAll();
   }
 
   @Get('/:id')
-  async getCategory(@Response() res: any, @Params('id') id: string) {
-    return await AppDataSource.getRepository(Image).findOne({
-      where: { id: +id },
-    });
+  async getImage(@Response() res: any, @Params('id') id: string) {
+    return await this.imageService.findById(+id);
   }
 
   @Post('/')
-  async createCategory(@Response() res: any, @Body() category: ImageDto) {
-    return await AppDataSource.getRepository(Image).save(category);
+  async createImage(@Response() res: any, @Body() image: Partial<Image>) {
+    return await this.imageService.create(image);
   }
 }

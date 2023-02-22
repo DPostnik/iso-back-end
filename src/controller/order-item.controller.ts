@@ -6,26 +6,30 @@ import {
   Post,
   Response,
 } from '@decorators/express';
-import { AppDataSource } from 'db';
 import { OrderItem } from 'entities';
-import { OrderItemDto } from 'entities/dto';
+import { OrderItemService } from 'service';
+import { Injectable } from '@decorators/di';
 
+@Injectable()
 @Controller('/order-item')
 export class OrderItemController {
+  constructor(private orderItemService: OrderItemService) {}
+
   @Get('/')
-  async getCategories(@Response() res: any) {
-    return await AppDataSource.getRepository(OrderItem).findAndCount();
+  async getOrderItems(@Response() res: any) {
+    return await this.orderItemService.findAll();
   }
 
   @Get('/:id')
-  async getCategory(@Response() res: any, @Params('id') id: string) {
-    return await AppDataSource.getRepository(OrderItem).findOne({
-      where: { id: +id },
-    });
+  async getOrderItem(@Response() res: any, @Params('id') id: string) {
+    return await this.orderItemService.findById(+id);
   }
 
   @Post('/')
-  async createCategory(@Response() res: any, @Body() orderItem: OrderItemDto) {
-    return await AppDataSource.getRepository(OrderItem).save(orderItem);
+  async createOrderItem(
+    @Response() res: any,
+    @Body() orderItem: Partial<OrderItem>,
+  ) {
+    return await this.orderItemService.create(orderItem);
   }
 }

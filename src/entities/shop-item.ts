@@ -12,23 +12,47 @@ export class ShopItem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+    default: 0,
+  })
   price: number;
 
-  @Column()
+  @Column({
+    unique: true,
+    nullable: false,
+  })
   title: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+    default: 0,
+  })
   count: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+    default: 0,
+  })
   volume: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+    default: 0,
+  })
   views: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+    default: 0,
+  })
   rating: number;
+
+  @Column({
+    nullable: false,
+    default: true,
+  })
+  isEnabled: boolean;
 
   @ManyToMany(() => Image)
   @JoinTable()

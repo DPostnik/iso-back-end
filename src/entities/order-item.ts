@@ -1,9 +1,4 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Order } from 'entities/order';
 import { ShopItem } from 'entities/shop-item';
 
@@ -12,8 +7,11 @@ export class OrderItem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  amount: number;
+  @Column({
+    nullable: false,
+    default: 0,
+  })
+  count: number;
 
   @ManyToOne(() => Order)
   order: Order;
